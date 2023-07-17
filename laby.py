@@ -15,7 +15,7 @@ class Cell:
         self.walls = [True] * 4
 
 class Labyrinth:
-    def __init__(self, height, width):
+    def __init__(self, width, height):
         self.matrix = []
 
         for i in range(height):
@@ -47,7 +47,6 @@ class Labyrinth:
                 y -= 1
 
         self.matrix[x][y].walls[direc] = False
-
 
 
 
