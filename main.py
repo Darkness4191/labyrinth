@@ -1,10 +1,20 @@
-import game, laby
+import time
+
+import game, laby, json, threading
+
+l = laby.Labyrinth(250, 150)
+
+def gen_maze(name):
+    time.sleep(1)
+    l.generate_maze(0.005)
 
 if __name__ == '__main__':
-    l = laby.Labyrinth(15, 45)
-    l.remove_wall(0, 0, laby.Direction.TOP.value)
-    l.remove_wall(44, 1, laby.Direction.TOP.value)
-    l.remove_wall(7, 7, laby.Direction.BOTTOM.value)
+    #l.remove_wall(l.matrix[0][0], l.matrix[1][0])
+    #threading.Thread(target=gen_maze, args=(1,)).start()
+    l.generate_maze()
+
+    with open("matrix.json", "w") as f:
+        f.write(json.dumps(l, indent=4, default=vars))
 
     g = game.Game(l)
     g.show()
