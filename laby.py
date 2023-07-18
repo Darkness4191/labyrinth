@@ -1,18 +1,21 @@
 from enum import Enum
+from tree import *
 import json, random, time
 
-class Direction(Enum):
-    TOP = 0
-    BOTTOM = 1
-    LEFT = 2
-    RIGHT = 3
+TOP = (0, -1)
+BOTTOM = (0, 1)
+RIGHT = (1, 0)
+LEFT = (-1, 0)
 
 class Cell:
     def __init__(self, x, y):
         self.x = x
         self.y = y
 
-        self.walls = [True] * 4
+        self.walls = {(1, 0): True,   #RIGHT
+                      (-1, 0): True,  #LEFT
+                      (0, 1): True,   #TOP
+                      (0, -1): True,} #BOTTOM
 
         self.visited = False
 
@@ -53,46 +56,21 @@ class Labyrinth:
                     return False
         return True
 
-    def _remove_wall(self, x, y, direc):
-        val = direc.value
-        self.matrix[x][y].walls[val] = False
+    def _remove_wall(self, x, y, direc : (int, int)):
+        cell = self.matrix[x][y]
+        cell2_x = x + direc[0]
+        cell2_y = y + direc[1]
 
-        changed = False
+        cell.walls[direc] = False
 
-        if val % 2 == 0:
-            val += 1
-        else:
-            val -= 1
-
-        if val >= 2:
-            if val == Direction.LEFT.value and x < (self.width - 1):
-                self.matrix[x + 1][y].walls[val] = False
-            elif x > 0:
-                self.matrix[x - 1][y].walls[val] = False
-        elif val <= 1:
-            if val == Direction.TOP.value and y < (self.height - 1):
-                self.matrix[x][y + 1].walls[val] = False
-            elif y > 0:
-                self.matrix[x][y - 1].walls[val] = False
-
-        if changed:
-            self.matrix[x][y].walls[val] = False
+        if cell2_x >= 0 and cell2_x < self.width and cell2_y >= 0 and cell2_y < self.height:
+            self.matrix[cell.x + direc[0]][cell.y + direc[1]].walls[tuple(i * (-1) for i in direc)] = False
 
     def remove_wall(self, cell1 : Cell, cell2 : Cell):
         dx = cell2.x - cell1.x
         dy = cell2.y - cell1.y
 
-        if abs(dx) > 1 or abs(dy) > 1:
-            raise RuntimeError(f"dx or dy can't be higher than 1 in remove_wall")
-
-        if dy > 0 and dx == 0:
-            self._remove_wall(cell2.x, cell2.y, Direction.TOP)
-        elif dy < 0 and dx == 0:
-            self._remove_wall(cell2.x, cell2.y, Direction.BOTTOM)
-        elif dx > 0 and dy == 0:
-            self._remove_wall(cell2.x, cell2.y, Direction.LEFT)
-        elif dx < 0 and dy == 0:
-            self._remove_wall(cell2.x, cell2.y, Direction.RIGHT)
+        self._remove_wall(cell1.x, cell1.y, (dx, dy))
 
     def clear_maze(self):
         self.matrix = []
@@ -104,37 +82,34 @@ class Labyrinth:
             self.matrix.append(sub)
 
     def generate_maze(self, timeout=0):
-        self._remove_wall(0, 0, Direction.TOP)
-        self._remove_wall(self.width - 1, self.height - 1, Direction.BOTTOM)
+        self._remove_wall(0, 0, TOP)
+        self._remove_wall(self.width - 1, self.height - 1, BOTTOM)
         current_cell = self.matrix[0][0]
         current_cell.visited = True
 
         stack = []
 
-        while not self._board_is_visited():
-            if self._check_if_neighbours_visited(current_cell):
+        while len(stack) != 0:
+            if not current_cell.visited and self._check_if_neighbours_visited(current_cell):
                 stack.append(current_cell)
 
                 neighbours = self._get_unvisited_neighbours(current_cell)
                 r = random.randrange(0, len(neighbours))
 
-                if abs(current_cell.x - neighbours[r].x) <= 1 and abs(current_cell.y - neighbours[r].y) <= 1:
-                    self.remove_wall(current_cell, neighbours[r])
+                self.remove_wall(current_cell, neighbours[r])
 
                 current_cell = neighbours[r]
                 current_cell.visited = True
-            elif not (len(stack) == 0):
+            else:
                 current_cell = stack.pop()
 
             time.sleep(timeout)
 
+    def _fill_node(self, node) -> Node:
+        for wall, i in enumerate(node.obj.walls):
+            if not wall:
+                node.set_node(self._fill_node(Node()))
 
 
-
-
-
-
-
-
-
-
+    def to_tree(self) -> Tree:
+        return

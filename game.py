@@ -1,5 +1,5 @@
 import pygame, math
-from laby import Labyrinth, Cell, Direction
+from laby import *
 
 WIDTH = 1280
 HEIGHT = 720
@@ -32,13 +32,13 @@ class Game:
 
         for i in range(len(self.labyrinth.matrix)):
             for j in range(len(self.labyrinth.matrix[i])):
-                if self.labyrinth.matrix[i][j].walls[Direction.TOP.value]:
+                if self.labyrinth.matrix[i][j].walls[TOP]:
                     self.draw_line(start_x + step_x * i, start_y + step_y * j, start_x + step_x * (i + 1), start_y + step_y * j)
-                if self.labyrinth.matrix[i][j].walls[Direction.BOTTOM.value]:
+                if self.labyrinth.matrix[i][j].walls[BOTTOM]:
                     self.draw_line(start_x + step_x * i, start_y + step_y * (j + 1), start_x + step_x * (i + 1), start_y + step_y * (j + 1))
-                if self.labyrinth.matrix[i][j].walls[Direction.LEFT.value]:
+                if self.labyrinth.matrix[i][j].walls[LEFT]:
                     self.draw_line(start_x + step_x * i, start_y + step_y * j, start_x + step_x * i, start_y + step_y * (j + 1))
-                if self.labyrinth.matrix[i][j].walls[Direction.RIGHT.value]:
+                if self.labyrinth.matrix[i][j].walls[RIGHT]:
                     self.draw_line(start_x + step_x * (i + 1), start_y + step_y * j, start_x + step_x * (i + 1), start_y + step_y * (j + 1))
 
 
