@@ -89,8 +89,8 @@ class Labyrinth:
 
         stack = []
 
-        while len(stack) != 0:
-            if not current_cell.visited and self._check_if_neighbours_visited(current_cell):
+        while not self._board_is_visited():
+            if self._check_if_neighbours_visited(current_cell):
                 stack.append(current_cell)
 
                 neighbours = self._get_unvisited_neighbours(current_cell)
@@ -100,7 +100,7 @@ class Labyrinth:
 
                 current_cell = neighbours[r]
                 current_cell.visited = True
-            else:
+            elif len(stack) != 0:
                 current_cell = stack.pop()
 
             time.sleep(timeout)
