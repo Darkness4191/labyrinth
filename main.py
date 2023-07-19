@@ -1,8 +1,8 @@
 import time
 
-import game, laby, json, threading, pickle
+import game, laby, threading, pickle
 
-l = laby.Labyrinth(30, 30)
+l = laby.Labyrinth(12, 12)
 
 def gen_maze(name):
     time.sleep(1)
@@ -15,6 +15,16 @@ if __name__ == '__main__':
 
     with open("matrix.json", "wb") as f:
         pickle.dump(l, f)
+
+    # Get the descendants of the node
+    descendants = l.tree.children(f"{l.width - 1},{l.height - 1}")
+
+    # Delete the descendants
+    for descendant in descendants:
+        l.tree.remove_subtree(descendant.identifier)
+
+    with open("tree.txt", "w") as f:
+        f.write(l.tree.show(stdout=False))
 
     g = game.Game(l)
     g.show()

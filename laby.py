@@ -1,6 +1,6 @@
 from enum import Enum
-from tree import *
-import json, random, time
+from treelib import Node, Tree
+import random, time
 
 TOP = (0, -1)
 BOTTOM = (0, 1)
@@ -56,15 +56,23 @@ class Labyrinth:
                     return False
         return True
 
+    def _get_next_cell(self, cell, direc):
+        cell2_x = cell.x + direc[0]
+        cell2_y = cell.y + direc[1]
+
+        if cell2_x >= 0 and cell2_x < self.width and cell2_y >= 0 and cell2_y < self.height:
+            return self.matrix[cell2_x][cell2_y]
+        else:
+            return None
+
     def _remove_wall(self, x, y, direc : (int, int)):
         cell = self.matrix[x][y]
-        cell2_x = x + direc[0]
-        cell2_y = y + direc[1]
+        cell2 = self._get_next_cell(cell, direc)
 
         cell.walls[direc] = False
 
-        if cell2_x >= 0 and cell2_x < self.width and cell2_y >= 0 and cell2_y < self.height:
-            self.matrix[cell.x + direc[0]][cell.y + direc[1]].walls[tuple(i * (-1) for i in direc)] = False
+        if cell2 != None:
+            cell2.walls[tuple(i * (-1) for i in direc)] = False
 
     def remove_wall(self, cell1 : Cell, cell2 : Cell):
         dx = cell2.x - cell1.x
@@ -87,6 +95,9 @@ class Labyrinth:
         current_cell = self.matrix[0][0]
         current_cell.visited = True
 
+        self.tree = Tree()
+        self.tree.create_node(tag=f"{current_cell.x},{current_cell.y}", identifier=f"{current_cell.x},{current_cell.y}", data=current_cell) # root node
+
         stack = []
 
         while not self._board_is_visited():
@@ -98,18 +109,11 @@ class Labyrinth:
 
                 self.remove_wall(current_cell, neighbours[r])
 
+                self.tree.create_node(tag=f"{neighbours[r].x},{neighbours[r].y}", identifier=f"{neighbours[r].x},{neighbours[r].y}", parent=f"{current_cell.x},{current_cell.y}", data=current_cell)
+
                 current_cell = neighbours[r]
                 current_cell.visited = True
             elif len(stack) != 0:
                 current_cell = stack.pop()
 
             time.sleep(timeout)
-
-    def _fill_node(self, node) -> Node:
-        for wall, i in enumerate(node.obj.walls):
-            if not wall:
-                node.set_node(self._fill_node(Node()))
-
-
-    def to_tree(self) -> Tree:
-        return
