@@ -19,3 +19,4 @@ class Search:
 
 
     def grade(self, labyrinth):
+        pass
