@@ -15,27 +15,12 @@ def show_maze():
 if __name__ == '__main__':
     #l.remove_wall(l.matrix[0][0], l.matrix[1][0])
     #threading.Thread(target=gen_maze).start()
-    search_and_grade = grade.Search()
 
-    mazes = {}
-
-    for i in range(1000):
-        maze = laby.Labyrinth(5, 5)
-        maze.generate_maze()
-
-        g = search_and_grade.grade(maze)
-
-        mazes[g] = maze
-
-        print(g)
-
-    sorted_keys = sorted(mazes)
-    print(mazes)
+    search_and_grade = grade.Maze_Search(10, 5)
 
     # with open("matrix.json", "wb") as f:
     #     pickle.dump(l, f)
     #
-    # # Get the descendants of the node
     # descendants = l.tree.children(f"{l.width - 1},{l.height - 1}")
     #
     # # Delete the descendants
@@ -44,9 +29,6 @@ if __name__ == '__main__':
     #
     # with open("tree.txt", "w") as f:
     #     f.write(l.tree.show(stdout=False))
-
-    threading.Thread(target=show_maze).start()
-
     # for i, key in enumerate(sorted_keys):
     #     new_maze = mazes[key]
     #     l.matrix = new_maze.matrix
@@ -54,13 +36,13 @@ if __name__ == '__main__':
     #
     #     time.sleep(0.5)
 
-    while True:
-        new_maze = mazes[sorted_keys[0]]
-        l.matrix = new_maze.matrix
+    best_fit, best_grade = search_and_grade.search_for_maze(0)
 
-        time.sleep(1)
+    l = best_fit
+    print(best_grade)
 
-        new_maze = mazes[sorted_keys[len(sorted_keys) - 1]]
-        l.matrix = new_maze.matrix
+    with open("tree.txt", "w", encoding="utf-8") as f:
+        f.write(l.tree.show(stdout=False))
 
-        time.sleep(1)
+    threading.Thread(target=show_maze).start()
+
