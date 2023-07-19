@@ -55,6 +55,10 @@ class Game:
 
             self.clock.tick(60)  # limits FPS to 60
 
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+
             pygame.event.pump()
 
             pygame.display.flip()
