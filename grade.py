@@ -67,6 +67,6 @@ class Maze_Search:
             if leaf != end_node:
                 junction_grade += self._distance_to_next_junction(tree, leaf) / self._shortest_path_to_start(tree, leaf)
 
-        final_grade = FACTOR * (length_grade * LENGTH_COEFFICIENT + junction_grade)
+        final_grade = length_grade * LENGTH_COEFFICIENT + junction_grade
 
         return final_grade
