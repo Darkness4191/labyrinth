@@ -12,10 +12,10 @@ class Cell:
         self.x = x
         self.y = y
 
-        self.walls = {(1, 0): True,   #RIGHT
-                      (-1, 0): True,  #LEFT
-                      (0, 1): True,   #TOP
-                      (0, -1): True,} #BOTTOM
+        self.walls = {(1, 0): True,
+                      (-1, 0): True,
+                      (0, 1): True,
+                      (0, -1): True,}
 
         self.visited = False
 
@@ -96,7 +96,9 @@ class Labyrinth:
         current_cell.visited = True
 
         self.tree = Tree()
-        self.tree.create_node(tag=f"{current_cell.x},{current_cell.y}", identifier=f"{current_cell.x},{current_cell.y}", data=current_cell) # root node
+        self.tree.create_node(tag=f"{current_cell.x},{current_cell.y}",
+                              identifier=f"{current_cell.x},{current_cell.y}",
+                              data=current_cell) # root node
 
         stack = []
 
@@ -109,7 +111,10 @@ class Labyrinth:
 
                 self.remove_wall(current_cell, neighbours[r])
 
-                self.tree.create_node(tag=f"{neighbours[r].x},{neighbours[r].y}", identifier=f"{neighbours[r].x},{neighbours[r].y}", parent=f"{current_cell.x},{current_cell.y}", data=current_cell)
+                self.tree.create_node(tag=f"{neighbours[r].x},{neighbours[r].y}",
+                                      identifier=f"{neighbours[r].x},{neighbours[r].y}",
+                                      parent=f"{current_cell.x},{current_cell.y}",
+                                      data=current_cell)
 
                 current_cell = neighbours[r]
                 current_cell.visited = True
