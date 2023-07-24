@@ -3,7 +3,7 @@ from stl import mesh
 from laby import *
 import pickle
 
-load = open('matrix.json', "rb")
+load = open('matrix.p', "rb")
 data = pickle.load(load)
 
 width = data.width + 1      # base_plate
