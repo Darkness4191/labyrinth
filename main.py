@@ -17,8 +17,8 @@ if __name__ == '__main__':
 
     threading.Thread(target=show_maze).start()
 
-    with open("matrix.json", "wb") as f:
-        pickle.dump(l, f)
+    # with open("matrix.p", "wb") as f:
+    #     pickle.dump(l, f)
 
     # with open("tree.txt", "w", encoding="utf-8") as f:
     #     f.write(l.tree.show(stdout=False))
