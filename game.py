@@ -1,11 +1,11 @@
 import pygame, math
 from laby import *
 
-WIDTH = 1280
-HEIGHT = 720
+WIDTH = 1920
+HEIGHT = 1080
 
-MAX_WIDTH = 1200
-MAX_HEIGHT = 640
+MAX_WIDTH = 1900
+MAX_HEIGHT = 1000
 
 class Game:
     def __init__(self, labyrinth):
@@ -44,7 +44,7 @@ class Game:
 
     def show(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((1280, 720))
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         self.clock = pygame.time.Clock()
         self.running = True
 

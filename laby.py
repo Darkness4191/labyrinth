@@ -101,12 +101,14 @@ class Labyrinth:
                               data=current_cell) # root node
 
         stack = []
+        first = True
 
-        while not self._board_is_visited():
-            if self._check_if_neighbours_visited(current_cell):
+        while len(stack) != 0 or first:
+            neighbours = self._get_unvisited_neighbours(current_cell)
+
+            if len(neighbours) > 0:
                 stack.append(current_cell)
 
-                neighbours = self._get_unvisited_neighbours(current_cell)
                 r = random.randrange(0, len(neighbours))
 
                 self.remove_wall(current_cell, neighbours[r])
@@ -118,7 +120,10 @@ class Labyrinth:
 
                 current_cell = neighbours[r]
                 current_cell.visited = True
-            elif len(stack) != 0:
+            else:
                 current_cell = stack.pop()
 
-            time.sleep(timeout)
+            first = False
+
+            if timeout > 0:
+                time.sleep(timeout)
