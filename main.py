@@ -1,7 +1,7 @@
 import time
 
 from treelib import Node, Tree
-import game, laby, threading, pickle, grade
+import game, laby, threading, pickle, grade, solve
 
 l = laby.Labyrinth(20, 20)
 
@@ -18,7 +18,10 @@ if __name__ == '__main__':
     #
     # l = best_fit
 
-    l.generate_maze(timeout=0.1)
+    l.generate_maze(timeout=0.001)
+
+    solver = solve.AStarSolver(l)
+    solver.solve()
 
     # with open("matrix.p", "wb") as f:
     #     pickle.dump(l, f)

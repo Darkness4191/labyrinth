@@ -19,6 +19,8 @@ class Cell:
 
         self.visited = False
 
+        self.color = (0, 0, 0)
+
 class Labyrinth:
     def __init__(self, width, height):
         self.matrix = []
@@ -89,6 +91,11 @@ class Labyrinth:
                 sub.append(Cell(i, j))
             self.matrix.append(sub)
 
+    def set_maze_unvisited(self):
+        for i in range(self.width):
+            for j in range(self.height):
+                self.matrix[i][j].visited = False
+
     def generate_maze(self, timeout=0):
         self._remove_wall(0, 0, TOP)
         self._remove_wall(self.width - 1, self.height - 1, BOTTOM)
@@ -127,3 +134,5 @@ class Labyrinth:
 
             if timeout > 0:
                 time.sleep(timeout)
+
+        self.set_maze_unvisited()

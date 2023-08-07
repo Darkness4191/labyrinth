@@ -7,6 +7,8 @@ HEIGHT = 720
 MAX_WIDTH = 1200
 MAX_HEIGHT = 640
 
+BACKGROUND_COLOR = (0, 0, 0)
+
 class Game:
     def __init__(self, labyrinth):
         self.labyrinth = labyrinth
@@ -14,8 +16,11 @@ class Game:
     def draw_line(self, x1y1, x2y2):
         pygame.draw.line(self.screen, (255, 255, 255), pygame.Vector2(x1y1), pygame.Vector2(x2y2))
 
-    def draw_box(self, x1y1, width, height):
-        pygame.draw.rect(self.screen, (0, 255, 0, 0), pygame.Rect(x1y1, (width, height)))
+    def draw_box(self, x1y1, width, height, color):
+        # shape_surf = pygame.Surface(pygame.Rect(x1y1, (width, height)).size, pygame.SRCALPHA)
+        # pygame.draw.rect(shape_surf, (0, 255, 0, 0), shape_surf.get_rect())
+        # self.screen.blit(shape_surf, pygame.Rect(x1y1, (width, height)))
+        pygame.draw.rect(self.screen, color, pygame.Rect(x1y1, (width, height)))
 
     def draw_matrix(self):
         ratio_matrix = self.labyrinth.width / self.labyrinth.height
@@ -38,10 +43,12 @@ class Game:
                 box = [[(start_x + step_x * i, start_y + step_y * j), (start_x + step_x * i, start_y + step_y * (j + 1))],
                        [(start_x + step_x * (i + 1), start_y + step_y * j), (start_x + step_x * (i + 1), start_y + step_y * (j + 1))]]
 
-                # box[0][0] top left ; box[1][0] top right
+                color = self.labyrinth.matrix[i][j].color
 
-                if self.labyrinth.matrix[i][j].visited:
-                    self.draw_box(box[0][0], step_x, step_y)
+                # box[0][0] top left ; box[1][0] top right ; box[x][y]
+
+                if color != BACKGROUND_COLOR:
+                    self.draw_box(box[0][0], step_x, step_y, self.labyrinth.matrix[i][j].color)
 
                 if self.labyrinth.matrix[i][j].walls[TOP]:
                     self.draw_line(box[0][0], box[1][0])
@@ -60,7 +67,7 @@ class Game:
         self.running = True
 
         while self.running:
-            self.screen.fill((0, 0, 0))
+            self.screen.fill(BACKGROUND_COLOR)
 
             self.draw_matrix()
 
