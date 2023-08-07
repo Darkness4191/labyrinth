@@ -3,7 +3,7 @@ import time
 from treelib import Node, Tree
 import game, laby, threading, pickle, grade
 
-l = laby.Labyrinth(300, 300)
+l = laby.Labyrinth(20, 20)
 
 def show_maze():
     g = game.Game(l)
@@ -18,7 +18,7 @@ if __name__ == '__main__':
     #
     # l = best_fit
 
-    l.generate_maze(0)
+    l.generate_maze(timeout=0.1)
 
     # with open("matrix.p", "wb") as f:
     #     pickle.dump(l, f)
