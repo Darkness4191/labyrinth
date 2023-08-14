@@ -48,7 +48,7 @@ class Game:
                 # box[0][0] top left ; box[1][0] top right ; box[x][y]
 
                 if color != BACKGROUND_COLOR:
-                    self.draw_box(box[0][0], step_x, step_y, self.labyrinth.matrix[i][j].color)
+                    self.draw_box(box[0][0], step_x, step_y, color)
 
                 if self.labyrinth.matrix[i][j].walls[TOP]:
                     self.draw_line(box[0][0], box[1][0])

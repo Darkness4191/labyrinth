@@ -111,6 +111,7 @@ class Labyrinth:
         first = True
 
         while len(stack) != 0 or first:
+            current_cell.color = (0, 255, 0)
             neighbours = self._get_unvisited_neighbours(current_cell)
 
             if len(neighbours) > 0:
