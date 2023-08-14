@@ -7,6 +7,9 @@ BOTTOM = (0, 1)
 RIGHT = (1, 0)
 LEFT = (-1, 0)
 
+VISITED_COLOR = (0, 0, 200)
+BACKGROUND_COLOR = (0, 0, 0)
+
 class Cell:
     def __init__(self, x, y):
         self.x = x
@@ -19,7 +22,7 @@ class Cell:
 
         self.visited = False
 
-        self.color = (0, 0, 0)
+        self.color = BACKGROUND_COLOR
 
 class Labyrinth:
     def __init__(self, width, height):
@@ -95,6 +98,7 @@ class Labyrinth:
         for i in range(self.width):
             for j in range(self.height):
                 self.matrix[i][j].visited = False
+                self.matrix[i][j].color = BACKGROUND_COLOR
 
     def generate_maze(self, timeout=0):
         self._remove_wall(0, 0, TOP)
@@ -111,7 +115,7 @@ class Labyrinth:
         first = True
 
         while len(stack) != 0 or first:
-            current_cell.color = (0, 255, 0)
+            current_cell.color = VISITED_COLOR
             neighbours = self._get_unvisited_neighbours(current_cell)
 
             if len(neighbours) > 0:

@@ -1,13 +1,18 @@
 import pygame, math
+
+import laby
 from laby import *
 
-WIDTH = 1280
-HEIGHT = 720
+# WIDTH = 1280
+# HEIGHT = 720
 
-MAX_WIDTH = 1200
-MAX_HEIGHT = 640
+WIDTH = 1920
+HEIGHT = 1080
 
-BACKGROUND_COLOR = (0, 0, 0)
+MAX_WIDTH = 1900
+MAX_HEIGHT = 1000
+
+BACKGROUND_COLOR = laby.BACKGROUND_COLOR
 
 class Game:
     def __init__(self, labyrinth):
@@ -48,7 +53,7 @@ class Game:
                 # box[0][0] top left ; box[1][0] top right ; box[x][y]
 
                 if color != BACKGROUND_COLOR:
-                    self.draw_box(box[0][0], step_x, step_y, color)
+                    self.draw_box(box[0][0], step_x + 1, step_y + 1, color)
 
                 if self.labyrinth.matrix[i][j].walls[TOP]:
                     self.draw_line(box[0][0], box[1][0])
@@ -62,7 +67,7 @@ class Game:
 
     def show(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((1280, 720))
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         self.clock = pygame.time.Clock()
         self.running = True
 
